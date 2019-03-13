@@ -1,0 +1,52 @@
+# Create a user.
+POST https://pixe.la/v1/users
+Content-Type: application/json
+
+{
+  "token": "{{token}}",
+  "username": "{{username}}",
+  "agreeTermsOfService": "yes",
+  "notMinor": "yes"
+}
+
+###
+
+# Create a graph.
+POST https://pixe.la/v1/users/{{username}}/graphs
+Content-Type: application/json
+X-USER-TOKEN: {{token}}
+
+{
+  "id": "{{graph-id}}",
+  "name": "{{graph-name}}",
+  "unit": "{{graph-unit}}",
+  "type": "int",
+  "color": "{{graph-color}}",
+  "timezone": "{{timezone}}"
+}
+
+###
+
+# Create a increment webhook
+POST https://pixe.la/v1/users/{{username}}/webhooks
+Content-Type: application/json
+X-USER-TOKEN: {{token}}
+
+{
+  "graphID": "{{graph-id}}",
+  "type": "increment"
+}
+
+###
+
+# Create a decrement webhook
+POST https://pixe.la/v1/users/{{username}}/webhooks
+Content-Type: application/json
+X-USER-TOKEN: {{token}}
+
+{
+  "graphID": "{{graph-id}}",
+  "type": "decrement"
+}
+
+###
