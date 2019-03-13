@@ -1,0 +1,25 @@
+package cloudfunctions
+
+import (
+	"encoding/json"
+	"fmt"
+	"html"
+	"net/http"
+)
+
+// HelloWorld prints the JSON encoded "message" field in the body
+// of the request or "Hello, World!" if there isn't one.
+func HelloWorld(w http.ResponseWriter, r *http.Request) {
+	var d struct {
+		Message string `json:"message"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
+		_, _ = fmt.Fprint(w, "Hello World!")
+		return
+	}
+	if d.Message == "" {
+		_, _ = fmt.Fprint(w, "Hello World!")
+		return
+	}
+	_, _ = fmt.Fprint(w, html.EscapeString(d.Message))
+}
