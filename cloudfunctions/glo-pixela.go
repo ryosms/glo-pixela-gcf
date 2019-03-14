@@ -7,19 +7,28 @@ import (
 	"net/http"
 )
 
-// HelloWorld prints the JSON encoded "message" field in the body
-// of the request or "Hello, World!" if there isn't one.
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
-	var d struct {
-		Message string `json:"message"`
-	}
+	var d GloWebhookPayload
 	if err := json.NewDecoder(r.Body).Decode(&d); err != nil {
 		_, _ = fmt.Fprint(w, "Hello World!")
 		return
 	}
-	if d.Message == "" {
+	if d.Action == "" {
 		_, _ = fmt.Fprint(w, "Hello World!")
 		return
 	}
-	_, _ = fmt.Fprint(w, html.EscapeString(d.Message))
+	_, _ = fmt.Fprint(w, html.EscapeString(d.Board.Name))
+}
+
+type WebhookItem struct {
+	Id   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type GloWebhookPayload struct {
+	Action   string      `json:"action"`
+	Board    WebhookItem `json:"board"`
+	Sender   WebhookItem `json:"sender"`
+	Card     WebhookItem `json:"card"`
+	Sequence int         `json:"sequence"`
 }
